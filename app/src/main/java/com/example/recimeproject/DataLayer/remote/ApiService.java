@@ -1,0 +1,25 @@
+package com.example.recimeproject.DataLayer.remote;
+
+import com.example.recimeproject.DataLayer.model.MealResponse;
+
+import io.reactivex.rxjava3.core.Single;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
+public interface ApiService {
+    @GET("random.php")
+    Single<MealResponse> getRandomMeal();
+
+    @GET("lookup.php")
+    Single<MealResponse> getMealById(@Query("i") String mealId);
+
+    @GET("search.php")
+    Single<MealResponse> searchMealsByLetter(@Query("f") String letter);
+
+    @GET("filter.php")
+    Call<MealResponse> getMealsByCategory(@Query("c") String category);
+
+    @GET("list.php?c=list")
+    Call<MealResponse> getCategories();
+}

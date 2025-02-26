@@ -1,0 +1,5 @@
+<!-- res/drawable/date_picker_background.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/date_picker_unselected" android:state_selected="false"/>
+    <item android:drawable="@drawable/date_picker_selected" android:state_selected="true"/>
+</selector>

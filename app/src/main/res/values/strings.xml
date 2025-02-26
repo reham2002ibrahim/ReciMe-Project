@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AppTest</string>
+    <string name="Beaf">Beaf</string>
+    <string name="Chicken">Chicken</string>
+    <string name="Dessert">Dessert</string>
+    <string name="SuggestionMeals">Suggestion Meals</string>
+</resources>

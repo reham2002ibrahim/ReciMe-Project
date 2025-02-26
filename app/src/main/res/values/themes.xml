@@ -1,0 +1,33 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ReciMeProject" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="colorPrimary">#FFA500</item> <!-- برتقالي فاتح -->
+        <item name="colorPrimaryVariant">#FF9900</item> <!-- لون برتقالي أغمق -->
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- لون النص على الأساسي -->
+
+        <!-- Secondary Colors -->
+        <item name="colorSecondary">#FFB74D</item> <!-- برتقالي فاتح دافئ -->
+        <item name="colorSecondaryVariant">#FF9800</item> <!-- برتقالي متوسط -->
+        <item name="colorOnSecondary">#212121</item> <!-- لون النص على الثانوي -->
+
+        <!-- Background & Surface -->
+        <item name="android:colorBackground">#f5f5f5</item> <!-- بيج فاتح جدا -->
+        <item name="colorSurface">#FFFFFF</item> <!-- أبيض نقي للخلفيات -->
+        <item name="colorOnSurface">#212121</item> <!-- لون النص الأساسي -->
+
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">#212121</item> <!-- أسود غامق -->
+        <item name="android:textColorSecondary">#757575</item> <!-- رمادي متوسط -->
+
+        <!-- Divider & Highlight Colors -->
+        <item name="android:colorControlHighlight">#FFCC80</item> <!-- لون تأثير الضغط -->
+        <item name="android:colorControlNormal">#FFB74D</item> <!-- لون الأيقونات الافتراضي -->
+
+        <!-- Status Bar Color (API 21+) -->
+        <item name="android:statusBarColor">#E65100</item> <!-- برتقالي داكن -->
+    </style>
+
+    <!-- تطبيق الثيم الرئيسي -->
+    <style name="Theme.ReciMeProject" parent="Base.Theme.ReciMeProject" />
+</resources>
