@@ -7,6 +7,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recimeproject.DataLayer.model.Area;
 import com.example.recimeproject.DataLayer.model.Category;
 import com.example.recimeproject.DataLayer.model.Ingredient;
 import com.example.recimeproject.DataLayer.repo.Repository;
@@ -24,6 +26,7 @@ public class Search extends AppCompatActivity implements SearchInterface {
     private Presenter presenter;
     private SearchAdapter searchAdapter;
     private IngredientAdapter ingredientAdapter ;
+    private AreaAdapter areaAdapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class Search extends AppCompatActivity implements SearchInterface {
             if (checkedId == R.id.chip) {
                 presenter.searchCategories();
             } else if (checkedId == R.id.chip2) {
-                //  presenter.searchIngrediant();
+                  presenter.searchAreas();
             } else if (checkedId == R.id.chip3) {
                  presenter.searchIngredients();
             }
@@ -70,6 +73,12 @@ public class Search extends AppCompatActivity implements SearchInterface {
     public void showAllIngredients(List<Ingredient> ingredients) {
         ingredientAdapter = new IngredientAdapter(this, ingredients);
         recyclerView.setAdapter(ingredientAdapter);
+    }
+
+    @Override
+    public void showAllAreas(List<Area> areas) {
+        areaAdapter = new AreaAdapter(this, areas);
+        recyclerView.setAdapter(areaAdapter);
     }
 
 

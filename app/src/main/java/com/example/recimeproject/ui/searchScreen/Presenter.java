@@ -42,4 +42,18 @@ public class Presenter implements PresenterInterface{
 
     }
 
+    @Override
+    public void searchAreas() {
+        Disposable disposable =repository.getAreas()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        areas -> view.showAllAreas(areas),
+                        throwable -> view.showError(throwable.getMessage())
+                );
+        compositeDisposable.add(disposable);
+
+    }
+
+
 }

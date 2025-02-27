@@ -1,5 +1,6 @@
 package com.example.recimeproject.DataLayer.remote;
 
+import com.example.recimeproject.DataLayer.model.AreaResponse;
 import com.example.recimeproject.DataLayer.model.CategoriesResponse;
 import com.example.recimeproject.DataLayer.model.IngredientResponse;
 import com.example.recimeproject.DataLayer.model.MealResponse;
@@ -28,10 +29,8 @@ public interface ApiService {
     @GET("list.php?i=list")
     Single<IngredientResponse> getIngredients();
 
-/*
-    @GET("list.php?c=list")
-    Call<MealResponse> getCategories();
-*/
+    @GET("list.php?a=list")
+    Single<AreaResponse> getAreas();
 
 
 }

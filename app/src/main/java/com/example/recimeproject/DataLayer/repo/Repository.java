@@ -3,6 +3,7 @@ package com.example.recimeproject.DataLayer.repo;
 import android.util.Log;
 
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
+import com.example.recimeproject.DataLayer.model.Area;
 import com.example.recimeproject.DataLayer.model.Category;
 import com.example.recimeproject.DataLayer.model.Ingredient;
 import com.example.recimeproject.DataLayer.model.Meal;
@@ -63,6 +64,12 @@ public class Repository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    public Single<List<Area>> getAreas() {
+        return remoteDataSource.getAreasWithImages()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 
     public Single<MealResponse> getMealsByCategory(String categoryName) {
         return remoteDataSource.getMealsByCategory(categoryName);
