@@ -1,6 +1,8 @@
 package com.example.recimeproject.DataLayer.remote;
 
 import android.util.Log;
+
+import com.example.recimeproject.DataLayer.model.Category;
 import com.example.recimeproject.DataLayer.model.Meal;
 import com.example.recimeproject.DataLayer.model.MealResponse;
 
@@ -53,4 +55,19 @@ public Single<Meal> getMealById(String mealId) {
                 .subscribeOn(Schedulers.io());
                 //.observeOn(AndroidSchedulers.mainThread());
     }
+
+    public Single<List<Category>> getCategories() {
+        return apiService.getCategories()
+                .subscribeOn(Schedulers.io())
+                .map(categoriesResponse -> {
+                    if (categoriesResponse.getCategories() != null && !categoriesResponse.getCategories().isEmpty()) {
+                        return categoriesResponse.getCategories();
+                    } else {
+                        throw new RuntimeException("No categories");
+                    }
+                });
+    }
+
+
+
 }

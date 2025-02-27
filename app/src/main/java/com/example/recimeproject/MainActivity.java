@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.recimeproject.ui.inspirationScreen.Inspiration;
+import com.example.recimeproject.ui.searchScreen.Search;
 import com.example.recimeproject.ui.signupScreen.Signup;
 import com.example.recimeproject.ui.splashScreen.Splash;
 
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(MainActivity.this, Splash.class);
+        Intent intent = new Intent(MainActivity.this, Inspiration.class);
         startActivity(intent);
         finish();
 

@@ -16,6 +16,9 @@
         android:theme="@style/Theme.ReciMeProject"
         tools:targetApi="31">
         <activity
+            android:name=".ui.searchScreen.Search"
+            android:exported="false" />
+        <activity
             android:name=".ui.profileScreen.profile"
             android:exported="false" />
         <activity

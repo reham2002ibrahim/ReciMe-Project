@@ -1,5 +1,6 @@
 package com.example.recimeproject.DataLayer.remote;
 
+import com.example.recimeproject.DataLayer.model.CategoriesResponse;
 import com.example.recimeproject.DataLayer.model.MealResponse;
 
 import io.reactivex.rxjava3.core.Single;
@@ -20,6 +21,15 @@ public interface ApiService {
     @GET("filter.php")
     Call<MealResponse> getMealsByCategory(@Query("c") String category);
 
+    @GET("categories.php")
+    Single<CategoriesResponse> getCategories();
+
+
+
+/*
     @GET("list.php?c=list")
     Call<MealResponse> getCategories();
+*/
+
+
 }
