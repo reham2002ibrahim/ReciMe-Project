@@ -3,6 +3,7 @@ package com.example.recimeproject.DataLayer.remote;
 import android.util.Log;
 
 import com.example.recimeproject.DataLayer.model.Category;
+import com.example.recimeproject.DataLayer.model.Ingredient;
 import com.example.recimeproject.DataLayer.model.Meal;
 import com.example.recimeproject.DataLayer.model.MealResponse;
 
@@ -22,6 +23,10 @@ import java.util.List;
 
 public class RemoteDataSource {
     private static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
+    private static final String IMAGE_ingredients_URL = "https://www.themealdb.com/images/ingredients/";
+
+    private static final String PLACEHOLDER_IMAGE = "https://www.themealdb.com/images/placeholder.png";
+
     private final ApiService apiService;
 
     public RemoteDataSource() {
@@ -35,7 +40,51 @@ public class RemoteDataSource {
     public Single<MealResponse> getRandomMeal() {
         return apiService.getRandomMeal().subscribeOn(Schedulers.io());
     }
-public Single<Meal> getMealById(String mealId) {
+
+    public Single<List<Ingredient>> getIngredientsWithImages() {
+        return apiService.getIngredients()
+                .subscribeOn(Schedulers.io())
+                .map(ingredientResponse -> {
+                    List<Ingredient> ingredients = ingredientResponse.getMeals();
+                    for (Ingredient ingredient : ingredients) {
+                        if (ingredient.getName() != null && !ingredient.getName().isEmpty()) {
+                            String imageUrl = IMAGE_ingredients_URL + ingredient.getName() + "-Small.png";
+                            ingredient.setImageUrl(imageUrl);
+                        } else {
+                            // إذا كان الاسم `null` أو فارغ، استخدم صورة افتراضية
+                            ingredient.setImageUrl(PLACEHOLDER_IMAGE);
+                        }
+                        // تسجيل البيانات القادمة من API للتأكد من القيم
+                        Log.d("IngredientCheck", "Ingredient name: " + ingredient.getName() + ", Image: " + ingredient.getImageUrl());
+                    }
+                    return ingredients;
+                });
+    }
+
+    public Single<List<Ingredient>> getIngredients() {
+        return getIngredientsWithImages()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+//    public Single<List<Ingredient>> getIngredientsWithImages() {
+//        return apiService.getIngredients()
+//                .subscribeOn(Schedulers.io())
+//                .map(ingredientResponse -> {
+//                    List<Ingredient> ingredients = ingredientResponse.getMeals();
+//                    for (Ingredient ingredient : ingredients) {
+//                        String imageUrl = IMAGE_ingredients_URL + ingredient.getName() + "-Small.png";
+//
+//                       // String imageUrl = IMAGE_ingredients_URL + ingredient.getName() + "-Small.png";
+//                        ingredient.setImageUrl(imageUrl);
+//                    }
+//                    return ingredients;
+//                });
+//    }
+
+
+    public Single<Meal> getMealById(String mealId) {
     return apiService.getMealById(mealId)
             .subscribeOn(Schedulers.io())
             .map(mealResponse -> {
@@ -70,6 +119,19 @@ public Single<Meal> getMealById(String mealId) {
         return apiService.getMealsByCategory(categoryName)
                 .subscribeOn(Schedulers.io());
     }
+
+/*    public Single<List<Ingredient>> getIngredientsWithImages() {
+        return apiService.getIngredients()
+                .subscribeOn(Schedulers.io())
+                .map(ingredientResponse -> {
+                    List<Ingredient> ingredients = ingredientResponse.getMeals();
+                    for (Ingredient ingredient : ingredients) {
+                        String imageUrl = IMAGE_ingredients_URL + ingredient.getName() + "-Small.png";
+                        ingredient.setImageUrl(imageUrl);
+                    }
+                    return ingredients;
+                });
+    }*/
 
 
 

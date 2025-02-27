@@ -6,9 +6,9 @@ import android.util.Log;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.recimeproject.DataLayer.model.Category;
+import com.example.recimeproject.DataLayer.model.Ingredient;
 import com.example.recimeproject.DataLayer.repo.Repository;
 import com.example.recimeproject.R;
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
@@ -22,7 +22,8 @@ public class Search extends AppCompatActivity implements SearchInterface {
     private Chip chip, chip2, chip3;
     private RecyclerView recyclerView;
     private Presenter presenter;
-    private SearchAdapter adapter;
+    private SearchAdapter searchAdapter;
+    private IngredientAdapter ingredientAdapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +53,25 @@ public class Search extends AppCompatActivity implements SearchInterface {
             if (checkedId == R.id.chip) {
                 presenter.searchCategories();
             } else if (checkedId == R.id.chip2) {
-                //  presenter.searchArea();
-            } else if (checkedId == R.id.chip3) {
                 //  presenter.searchIngrediant();
+            } else if (checkedId == R.id.chip3) {
+                 presenter.searchIngredients();
             }
         });
     }
 
     @Override
-    public void showSearchResults(List<Category> categories) {
-        adapter = new SearchAdapter(this, categories);
-        recyclerView.setAdapter(adapter);
+    public void showAllCategories(List<Category> categories) {
+        searchAdapter = new SearchAdapter(this, categories);
+        recyclerView.setAdapter(searchAdapter);
     }
+
+    @Override
+    public void showAllIngredients(List<Ingredient> ingredients) {
+        ingredientAdapter = new IngredientAdapter(this, ingredients);
+        recyclerView.setAdapter(ingredientAdapter);
+    }
+
 
     @Override
     public void showError(String message) {

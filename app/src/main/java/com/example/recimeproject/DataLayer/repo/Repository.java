@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
 import com.example.recimeproject.DataLayer.model.Category;
+import com.example.recimeproject.DataLayer.model.Ingredient;
 import com.example.recimeproject.DataLayer.model.Meal;
 import com.example.recimeproject.DataLayer.model.MealDate;
 import com.example.recimeproject.DataLayer.model.MealResponse;
@@ -57,6 +58,12 @@ public class Repository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    public Single<List<Ingredient>> getIngredients() {
+        return remoteDataSource.getIngredientsWithImages()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Single<MealResponse> getMealsByCategory(String categoryName) {
         return remoteDataSource.getMealsByCategory(categoryName);
     }

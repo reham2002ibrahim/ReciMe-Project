@@ -1,5 +1,4 @@
 package com.example.recimeproject.ui.searchScreen;
-import com.example.recimeproject.DataLayer.model.CategoriesResponse;
 import com.example.recimeproject.DataLayer.repo.Repository;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -24,10 +23,23 @@ public class Presenter implements PresenterInterface{
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        categories -> view.showSearchResults(categories),
+                        categories -> view.showAllCategories(categories),
                         throwable -> view.showError(throwable.getMessage())
                 );
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void searchIngredients() {
+        Disposable disposable =repository.getIngredients ()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ingredients -> view.showAllIngredients(ingredients),
+                        throwable -> view.showError(throwable.getMessage())
+                );
+        compositeDisposable.add(disposable);
+
     }
 
 }
