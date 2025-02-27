@@ -1,4 +1,5 @@
 package com.example.recimeproject.ui.searchScreen;
+import com.example.recimeproject.DataLayer.model.CategoriesResponse;
 import com.example.recimeproject.DataLayer.repo.Repository;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -16,6 +17,7 @@ public class Presenter implements PresenterInterface{
         this.repository = repository;
     }
 
+
     @Override
     public void searchCategories() {
         Disposable disposable = repository.getCategories()
@@ -27,4 +29,5 @@ public class Presenter implements PresenterInterface{
                 );
         compositeDisposable.add(disposable);
     }
+
 }

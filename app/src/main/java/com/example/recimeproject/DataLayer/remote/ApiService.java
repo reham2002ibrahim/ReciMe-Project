@@ -18,11 +18,11 @@ public interface ApiService {
     @GET("search.php")
     Single<MealResponse> searchMealsByLetter(@Query("f") String letter);
 
-    @GET("filter.php")
-    Call<MealResponse> getMealsByCategory(@Query("c") String category);
-
     @GET("categories.php")
     Single<CategoriesResponse> getCategories();
+
+    @GET("filter.php")
+    Single<MealResponse> getMealsByCategory(@Query("c") String categoryName);
 
 
 

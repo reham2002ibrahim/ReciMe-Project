@@ -20,11 +20,16 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CategoryViewHolder> {
     private Context context;
     private List<Category> categoryList;
+    /*private OnItemClickListener listener;*/
+
 
     public SearchAdapter(Context context, List<Category> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
     }
+ /*   public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }*/
 
     @NonNull
     @Override
@@ -43,10 +48,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CategoryVi
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.detete_icon)
                 .into(holder.imgCategoryThumb);
+/*
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(category.getStrCategory());
+            }
+        });*/
 
       /*  holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CategoryDetailsActivity.class);
-            intent.putExtra("category_id", category.getIdCategory()); // إرسال معرف الفئة
+            intent.putExtra("category_id", category.getIdCategory());
             context.startActivity(intent);
         });*/
 
@@ -55,8 +66,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CategoryVi
 
     @Override
     public int getItemCount() {
-        Log.d("CategoryAdapter", "Total items: " + categoryList.size());
-        return categoryList.size();
+          return categoryList.size();
     }
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView imgCategoryThumb;
@@ -68,4 +78,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CategoryVi
             txtCategoryName = itemView.findViewById(R.id.categoryName);
         }
     }
+
+//    public interface OnItemClickListener {
+//        void onItemClick(String item);
+//    }
 }

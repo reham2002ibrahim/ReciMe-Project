@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface SearchInterface {
     void showSearchResults(List<Category> categories);
+  //  void showMeals(List<Meal> meals);
     void showError(String message);
 
 

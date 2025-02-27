@@ -22,6 +22,7 @@ import com.example.recimeproject.ui.calenderScreen.CalenderMeals;
 import com.example.recimeproject.ui.detailsOfMealScreen.DetailsOfMeal;
 import com.example.recimeproject.ui.profileScreen.profile;
 import com.example.recimeproject.ui.savedScreen.SavedMeals;
+import com.example.recimeproject.ui.searchScreen.Search;
 
 import java.util.Calendar;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Inspiration extends AppCompatActivity implements InspirationInterfa
     TextView txtMealName;
     private String mealId;
     private String mealName;
-    Button btnSaved , btnCalender;
+    Button btnSaved , btnCalender, btnSearch , btnHome;
 
 
     @Override
@@ -44,6 +45,7 @@ public class Inspiration extends AppCompatActivity implements InspirationInterfa
         imgMeal = findViewById(R.id.imgMeal);
         txtMealName = findViewById(R.id.txtMealName);
         btnSaved = findViewById(R.id.btnSaved);
+        btnSearch = findViewById(R.id.btnSearch);
         btnCalender = findViewById(R.id.btnCalender);
         profileImg = findViewById(R.id.profileImg);
         presenter = new Presenter(this, Repository.getInstance(LocalDataSource.getInstance(this) , new RemoteDataSource()));
@@ -87,7 +89,17 @@ public class Inspiration extends AppCompatActivity implements InspirationInterfa
                 startActivity(intent);
             }
         });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Inspiration.this, Search.class);
+                startActivity(intent) ;
+            }
+        });
+
+
     }
+
 
     @Override
     public void showRandomMeal(Meal meal) {

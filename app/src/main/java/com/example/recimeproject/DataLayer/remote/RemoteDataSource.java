@@ -60,12 +60,15 @@ public Single<Meal> getMealById(String mealId) {
         return apiService.getCategories()
                 .subscribeOn(Schedulers.io())
                 .map(categoriesResponse -> {
-                    if (categoriesResponse.getCategories() != null && !categoriesResponse.getCategories().isEmpty()) {
+                    if (categoriesResponse.getCategories() != null) {
                         return categoriesResponse.getCategories();
-                    } else {
-                        throw new RuntimeException("No categories");
-                    }
+                    } else throw new RuntimeException("No results categories");
+
                 });
+    }
+    public Single<MealResponse> getMealsByCategory(String categoryName) {
+        return apiService.getMealsByCategory(categoryName)
+                .subscribeOn(Schedulers.io());
     }
 
 
