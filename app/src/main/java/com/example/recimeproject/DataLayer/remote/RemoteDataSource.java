@@ -135,8 +135,8 @@ public class RemoteDataSource {
 
                 });
     }
-    public Single<MealResponse> getMealsByCategory(String categoryName) {
-        return apiService.getMealsByCategory(categoryName)
+    public Single<MealResponse> getMealsByCategory(String category) {
+        return apiService.getMealsByCategory(category)
                 .subscribeOn(Schedulers.io());
     }
 

@@ -24,7 +24,7 @@ public interface ApiService {
     Single<CategoriesResponse> getCategories();
 
     @GET("filter.php")
-    Single<MealResponse> getMealsByCategory(@Query("c") String categoryName);
+    Single<MealResponse> getMealsByCategory(@Query("c") String category);
 
     @GET("list.php?i=list")
     Single<IngredientResponse> getIngredients();

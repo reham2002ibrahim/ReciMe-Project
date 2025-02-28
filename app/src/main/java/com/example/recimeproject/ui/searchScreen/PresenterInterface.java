@@ -7,8 +7,5 @@ public interface PresenterInterface {
 
     void searchAreas();
     void searchByName(String mealName);
-
-
-
-    //void searchMealsByCategory(String categoryName);
+    void searchMealsByCategory(String categoryName);
 }

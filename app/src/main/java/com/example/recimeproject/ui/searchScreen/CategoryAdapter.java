@@ -1,6 +1,5 @@
 package com.example.recimeproject.ui.searchScreen;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,24 +16,25 @@ import com.example.recimeproject.R;
 
 import java.util.List;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CategoryViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private Context context;
     private List<Category> categoryList;
     /*private OnItemClickListener listener;*/
+    private OnItemClickListener listener;
 
 
-    public SearchAdapter(Context context, List<Category> categoryList) {
+    public CategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
     }
- /*   public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
-    }*/
+    }
 
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_search, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_category, parent, false);
         return new CategoryViewHolder(view);
     }
 
@@ -48,21 +48,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CategoryVi
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.detete_icon)
                 .into(holder.imgCategoryThumb);
-/*
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(category.getStrCategory());
             }
-        });*/
+        });
 
-      /*  holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CategoryDetailsActivity.class);
-            intent.putExtra("category_id", category.getIdCategory());
-            context.startActivity(intent);
-        });*/
-
-        Log.d("CategoryAdapter", "Inserted category at position " + position + ", name: " + category.getStrCategory());
+        Log.d("CategoryAdapter", "done  name: " + category.getStrCategory());
     }
+
 
     @Override
     public int getItemCount() {
@@ -79,7 +74,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CategoryVi
         }
     }
 
-//    public interface OnItemClickListener {
-//        void onItemClick(String item);
-//    }
+    public interface OnItemClickListener {
+        void onItemClick(String categoryName);
+    }
 }

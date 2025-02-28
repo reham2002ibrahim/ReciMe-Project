@@ -7,12 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recimeproject.DataLayer.model.Area;
@@ -25,6 +23,7 @@ import com.example.recimeproject.DataLayer.local.LocalDataSource;
 import com.example.recimeproject.DataLayer.remote.RemoteDataSource;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.example.recimeproject.ui.searchScreen.CategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class Search extends AppCompatActivity implements SearchInterface {
     private RecyclerView recyclerView;
     ImageView imgDelete ;
     private Presenter presenter;
-    private SearchAdapter searchAdapter;
+    private CategoryAdapter categoryAdapter;
     private MealAdapter mealAdapter;
     private IngredientAdapter ingredientAdapter ;
     private AreaAdapter areaAdapter ;
@@ -64,8 +63,10 @@ public class Search extends AppCompatActivity implements SearchInterface {
         );
         presenter = new Presenter(this, repository);
         setupChipListeners();
+
         mealAdapter = new MealAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(mealAdapter);
+
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -101,12 +102,23 @@ public class Search extends AppCompatActivity implements SearchInterface {
             }
     }
 
+    @Override
+    public void showMealsOfTheCategoty(List<Meal> mealList) {
+        isSearching = true;
+        mealAdapter = new MealAdapter(this, mealList);
+        recyclerView.setAdapter(mealAdapter);
+        mealAdapter.notifyDataSetChanged();
+    }
+
     private void setupChipListeners() {
         chipGroup.setSingleSelection(true);
 
         chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (!isSearching){
-
+            if (mealAdapter != null) {
+                mealAdapter.setMealList(new ArrayList<>());
+                mealAdapter.notifyDataSetChanged();
+            }
+            isSearching = false;
             if (checkedId == R.id.chip) {
                 presenter.searchCategories();
             } else if (checkedId == R.id.chip2) {
@@ -114,9 +126,9 @@ public class Search extends AppCompatActivity implements SearchInterface {
             } else if (checkedId == R.id.chip3) {
                 presenter.searchIngredients();
             }
-        }
         });
     }
+
     private void restoreChipSelection() {
         int checkedId = chipGroup.getCheckedChipId();
         if (checkedId == R.id.chip) {
@@ -128,16 +140,18 @@ public class Search extends AppCompatActivity implements SearchInterface {
         }
     }
 
-    @Override
+
     public void showAllCategories(List<Category> categories) {
         if (!isSearching) {
-            searchAdapter = new SearchAdapter(this, categories);
-            recyclerView.setAdapter(searchAdapter);
-            searchAdapter.notifyDataSetChanged();
-
+            categoryAdapter = new CategoryAdapter(this, categories);
+            recyclerView.setAdapter(categoryAdapter);
+            categoryAdapter.notifyDataSetChanged();
+            categoryAdapter.setOnItemClickListener(categoryName -> {
+                isSearching = true;
+                presenter.searchMealsByCategory(categoryName);
+            });
         }
     }
-
     @Override
     public void showAllIngredients(List<Ingredient> ingredients) {
         if (!isSearching) {

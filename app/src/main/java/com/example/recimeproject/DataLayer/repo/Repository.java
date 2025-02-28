@@ -79,8 +79,11 @@ public class Repository {
 
 
 
-    public Single<MealResponse> getMealsByCategory(String categoryName) {
-        return remoteDataSource.getMealsByCategory(categoryName);
+    public Single<List<Meal>> getMealsByCategory(String category) {
+        return remoteDataSource.getMealsByCategory(category)
+                .map(MealResponse::getMeals)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Completable insertToFav(String mealId) {
