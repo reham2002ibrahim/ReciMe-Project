@@ -1,6 +1,7 @@
 package com.example.recimeproject.ui.searchScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.recimeproject.DataLayer.model.Meal;
 import com.example.recimeproject.R;
+import com.example.recimeproject.ui.detailsOfMealScreen.DetailsOfMeal;
 
 import java.util.List;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     private Context context;
     private List<Meal> mealList;
+    private OnItemClickListener listener;
     public MealAdapter(Context context, List<Meal> mealList) {
         this.context = context;
         this.mealList = mealList;
     }
-
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +45,18 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 .load(meal.getStrMealThumb())
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.imgMealThumb);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailsOfMeal.class);
+                intent.putExtra("mealId", meal.getIdMeal());
+                context.startActivity(intent);
+            }
+
+
+        });
+
     }
 
     @Override
@@ -58,5 +75,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             imgMealThumb = itemView.findViewById(R.id.imgMealThumb);
             txtMealName = itemView.findViewById(R.id.txtMealName);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String mealName);
     }
 }

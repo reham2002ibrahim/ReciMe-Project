@@ -139,5 +139,13 @@ public class RemoteDataSource {
         return apiService.getMealsByCategory(category)
                 .subscribeOn(Schedulers.io());
     }
+    public Single<MealResponse> getMealsByIngredient(String ingredient) {
+        return apiService.getMealsByIngredient(ingredient)
+                .subscribeOn(Schedulers.io());
+    }
+    public Single<MealResponse> getMealsByArea(String area) {
+        return apiService.getMealsByArea(area)
+                .subscribeOn(Schedulers.io());
+    }
 
 }

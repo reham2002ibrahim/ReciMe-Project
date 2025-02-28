@@ -85,6 +85,17 @@ public class Repository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    public Single<List<Meal>> getMealsByIngredient(String ingredient) {
+        return remoteDataSource.getMealsByIngredient(ingredient)
+                .map(MealResponse::getMeals)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }    public Single<List<Meal>> getMealsByArea(String area) {
+        return remoteDataSource.getMealsByArea(area)
+                .map(MealResponse::getMeals)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
     public Completable insertToFav(String mealId) {
         return remoteDataSource.getMealById(mealId)

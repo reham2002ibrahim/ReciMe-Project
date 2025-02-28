@@ -62,8 +62,9 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailsOfMeal.this, Inspiration.class);
-                startActivity(intent);
+                finish();
+               /* Intent intent = new Intent(DetailsOfMeal.this, Inspiration.class);
+                startActivity(intent);*/
             }
         });
 

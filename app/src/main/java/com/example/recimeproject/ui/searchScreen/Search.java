@@ -110,6 +110,21 @@ public class Search extends AppCompatActivity implements SearchInterface {
         mealAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void showMealsOfTheIngredient(List<Meal> mealList) {
+        isSearching = true;
+        mealAdapter = new MealAdapter(this, mealList);
+        recyclerView.setAdapter(mealAdapter);
+        mealAdapter.notifyDataSetChanged();
+    }
+   @Override
+    public void showMealsOfTheArea(List<Meal> mealList) {
+        isSearching = true;
+        mealAdapter = new MealAdapter(this, mealList);
+        recyclerView.setAdapter(mealAdapter);
+        mealAdapter.notifyDataSetChanged();
+    }
+
     private void setupChipListeners() {
         chipGroup.setSingleSelection(true);
 
@@ -158,7 +173,13 @@ public class Search extends AppCompatActivity implements SearchInterface {
             ingredientAdapter = new IngredientAdapter(this, ingredients);
             recyclerView.setAdapter(ingredientAdapter);
             ingredientAdapter.notifyDataSetChanged();
+            ingredientAdapter.setOnItemClickListener(ingredientName -> {
+                isSearching = true;
+                Log.i("search", "showAllIngredientsnameee: " + ingredientName);
+                presenter.searchMealsByIngredient(ingredientName);
+            });
         }
+
     }
 
     @Override
@@ -167,6 +188,11 @@ public class Search extends AppCompatActivity implements SearchInterface {
             areaAdapter = new AreaAdapter(this, areas);
             recyclerView.setAdapter(areaAdapter);
             areaAdapter.notifyDataSetChanged();
+            areaAdapter.setOnItemClickListener(areaName -> {
+                isSearching = true;
+                Log.i("search", "showAllIngredientsnameee: " + areaName);
+                presenter.searchMealsByArea(areaName);
+            });
         }
     }
     @Override

@@ -13,6 +13,8 @@ public interface SearchInterface {
     void showAllAreas(List<Area> ingredients);
     void showSearchResults(List<Meal> mealList);
     void showMealsOfTheCategoty(List<Meal> mealList);
+    void showMealsOfTheIngredient(List<Meal> mealList);
+    void showMealsOfTheArea(List<Meal> mealList);
 
   //  void showMeals(List<Meal> meals);
     void showError(String message);

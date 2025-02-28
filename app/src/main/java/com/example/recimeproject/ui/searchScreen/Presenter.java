@@ -93,5 +93,40 @@ public class Presenter implements PresenterInterface{
     }
 
 
+    public void searchMealsByIngredient(String ingrediantName) {
+        Disposable disposable = repository.getMealsByIngredient(ingrediantName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mealList -> {
+                            if (mealList != null && !mealList.isEmpty()) {
+                                view.showMealsOfTheIngredient(mealList);
+                            } else {
+                                view.showError("ingredians iss empty");
+                            }
+                        },
+                        throwable -> view.showError(throwable.getMessage())
+                );
+        compositeDisposable.add(disposable);
+    }
+    public void searchMealsByArea(String areaName) {
+        Disposable disposable = repository.getMealsByArea(areaName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mealList -> {
+                            if (mealList != null && !mealList.isEmpty()) {
+                                view.showMealsOfTheArea(mealList);
+                            } else {
+                                view.showError("ingredians iss empty");
+                            }
+                        },
+                        throwable -> view.showError(throwable.getMessage())
+                );
+        compositeDisposable.add(disposable);
+    }
+
+
+
 
 }

@@ -21,9 +21,15 @@ import java.util.List;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
     private Context context;
     private List<Ingredient> ingredientList;
+
+    private OnItemClickListener listener;
     public IngredientAdapter(Context context, List<Ingredient> ingredientList) {
         this.context = context;
         this.ingredientList = ingredientList;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -44,6 +50,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 .error(R.drawable.detete_icon)
                 .into(holder.imgIngredientThumb);
 
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(ingredient.getName());
+            }
+        });
+
         Log.d("IngredientAdapter", "Inserted ingredient at position " + position + ", name: " + ingredient.getName());
     }
 
@@ -61,5 +73,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             imgIngredientThumb = itemView.findViewById(R.id.ingredientImage);
             txtIngredientName = itemView.findViewById(R.id.ingredientName);
         }
+    }
+    public interface OnItemClickListener {
+        void onItemClick(String categoryName);
     }
 }
