@@ -99,6 +99,10 @@ public class RemoteDataSource {
                     return areas;
                 });
     }
+    public Single<MealResponse> searchMealsByName(String mealName) {
+        return apiService.searchMealsByName(mealName)
+                .subscribeOn(Schedulers.io());
+    }
 
     public Single<Meal> getMealById(String mealId) {
     return apiService.getMealById(mealId)

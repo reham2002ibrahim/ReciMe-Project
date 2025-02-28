@@ -32,5 +32,9 @@ public interface ApiService {
     @GET("list.php?a=list")
     Single<AreaResponse> getAreas();
 
+    @GET("search.php")
+    Single<MealResponse> searchMealsByName(@Query("s") String mealName);
+
+
 
 }

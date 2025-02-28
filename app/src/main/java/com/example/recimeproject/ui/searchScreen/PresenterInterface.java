@@ -6,6 +6,9 @@ public interface PresenterInterface {
     void searchIngredients();
 
     void searchAreas();
+    void searchByName(String mealName);
+
+
 
     //void searchMealsByCategory(String categoryName);
 }

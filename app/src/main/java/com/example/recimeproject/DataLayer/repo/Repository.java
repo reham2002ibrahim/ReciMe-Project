@@ -70,6 +70,14 @@ public class Repository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Single<List<Meal>> getMealByName(String mealName) {
+        return remoteDataSource.searchMealsByName(mealName)
+                .map(MealResponse::getMeals)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
 
     public Single<MealResponse> getMealsByCategory(String categoryName) {
         return remoteDataSource.getMealsByCategory(categoryName);

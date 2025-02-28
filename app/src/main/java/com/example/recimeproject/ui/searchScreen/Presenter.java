@@ -54,6 +54,23 @@ public class Presenter implements PresenterInterface{
         compositeDisposable.add(disposable);
 
     }
+    @Override
+    public void searchByName(String mealName) {
+        Disposable disposable = repository.getMealByName(mealName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mealList -> {
+                            if (mealList != null && !mealList.isEmpty()) {
+                                view.showSearchResults(mealList);
+                            } else {
+                                view.showError("No data found");
+                            }
+                        },
+                        throwable -> view.showError(throwable.getMessage())
+                );
+        compositeDisposable.add(disposable);
+    }
 
 
 }
