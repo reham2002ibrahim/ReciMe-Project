@@ -45,6 +45,8 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         long curDate = calendar.getTimeInMillis();
+        date = calendar.getTime();
+        Log.d("CalenderMeals", "Initialized Date: " + date); // تسجيل تاريخ التهيئة
 
         calendar.add(Calendar.DAY_OF_YEAR, 6);
         long nxtDate = calendar.getTimeInMillis();
@@ -52,8 +54,8 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
         calendarView.setMaxDate(nxtDate);
         calendarView.setDate(curDate);
 
-        calendarView.setOnDateChangeListener((view, year, month,dayOfMonth) -> {
-            Calendar chosenDate=Calendar.getInstance();
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            Calendar chosenDate = Calendar.getInstance();
             chosenDate.set(year, month, dayOfMonth);
             chosenDate.set(Calendar.HOUR_OF_DAY, 0);
             chosenDate.set(Calendar.MINUTE, 0);
@@ -65,21 +67,35 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             this::showCalenderMeals,
-                            throwable -> Log.e("CalenderMeals", "Errorin  fetching meals " + throwable.getMessage())
+                            throwable -> Log.e("CalenderMeals", "Error in لثسس " + throwable.getMessage())
                     ));
         });
+
         recyclerView = findViewById(R.id.rvFavMeals);
         btnBack = findViewById(R.id.btnBack);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         adapter = new CalendredAdapter(this, new ArrayList<>(), meal -> {
-            disposables.add(presenter.deleteCalendredMeal(meal.getIdMeal(), date)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            () -> Log.d("CalenderMeals", "Meal deleted successfully"),
-                            throwable -> Log.e("CalenderMeals", "Error deleting meal " + throwable.getMessage())
-                    ));
+            if (date != null) {
+                Log.d("CalenderMeals", "MealID = " + meal.getIdMeal());
+                Log.d("CalenderMeals", "MealDate =  " + date);
+
+                disposables.add(presenter.deleteCalendredMeal(meal.getIdMeal(), date)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                () -> {
+                                    Log.d("CalenderMeals", "Meal deleted successfully");
+                                    int position = adapter.getMealList().indexOf(meal);
+                                    if (position != -1) {
+                                        adapter.removeMeal(position);
+                                    }
+                                },
+                                throwable -> Log.e("CalenderMeals", "erreoe in delete" + throwable.getMessage())
+                        ));
+            } else {
+                Log.e("CalenderMeals", " date = null");
+            }
         });
 
         recyclerView.setAdapter(adapter);
@@ -97,7 +113,7 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
     @Override
     public void showCalenderMeals(List<Meal> meals) {
         adapter.setMealList(meals);
-        Log.i("calenderMeals ", "showCalenderMeals:meals is ready for you ");
+        Log.i("calenderMeals ", "showCalenderMeals: meals are ready for you");
     }
 
     @Override
@@ -106,5 +122,3 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
         disposables.clear();
     }
 }
-
-

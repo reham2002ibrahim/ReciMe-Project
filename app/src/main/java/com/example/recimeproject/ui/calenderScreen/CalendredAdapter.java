@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +24,7 @@ public class CalendredAdapter extends RecyclerView.Adapter<CalendredAdapter.Meal
     private final Context context;
     private List<Meal> mealList;
     private final OnRemoveClickListener onRemoveClickListener;
+    private OnItemClickListener onItemClickListener;
 
     public CalendredAdapter(Context context, List<Meal> mealList, OnRemoveClickListener onRemoveClickListener) {
         this.context = context;
@@ -57,9 +57,9 @@ public class CalendredAdapter extends RecyclerView.Adapter<CalendredAdapter.Meal
         });
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailsOfMeal.class);
-            intent.putExtra("mealId", meal.getIdMeal());
-            context.startActivity(intent);
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(meal);
+            }
         });
     }
 
@@ -73,6 +73,17 @@ public class CalendredAdapter extends RecyclerView.Adapter<CalendredAdapter.Meal
         notifyDataSetChanged();
     }
 
+    public List<Meal> getMealList() {
+        return mealList;
+    }
+
+    public void removeMeal(int position) {
+        if (position >= 0 && position < mealList.size()) {
+            mealList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
     public static class MealViewHolder extends RecyclerView.ViewHolder {
         ImageView imgMealThumb;
         TextView txtMealName;
@@ -84,5 +95,9 @@ public class CalendredAdapter extends RecyclerView.Adapter<CalendredAdapter.Meal
             txtMealName = itemView.findViewById(R.id.txtMealName);
             deleteIcon = itemView.findViewById(R.id.deleteIcon);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Meal meal);
     }
 }

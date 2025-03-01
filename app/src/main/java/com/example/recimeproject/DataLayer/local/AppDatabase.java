@@ -11,7 +11,7 @@ import com.example.recimeproject.DataLayer.model.Meal;
 import com.example.recimeproject.DataLayer.model.MealDate;
 
 //@Database(entities = {Meal.class}, version = 1, exportSchema = false)
-@Database(entities = {Meal.class, MealDate.class}, version = 2, exportSchema = false)
+@Database(entities = {Meal.class, MealDate.class}, version = 3, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract MealDao mealDao();
