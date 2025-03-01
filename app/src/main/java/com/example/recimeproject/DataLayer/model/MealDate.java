@@ -2,13 +2,11 @@ package com.example.recimeproject.DataLayer.model;
 import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(
         tableName = "Calendar",
-        foreignKeys = @ForeignKey(entity = Meal.class, parentColumns = "idMeal", childColumns = "mealId", onDelete = ForeignKey.CASCADE),
         indices = {@Index(value = {"mealId", "date"}, unique = true)}
 )
 public class MealDate {
@@ -30,10 +28,8 @@ public class MealDate {
         return id;
     }
 
-   /* public void setId(int id) {
-        this.id = id;
-    }   */
-   public MealDate() {}
+    public MealDate() {}
+
     public String getUserId() {
         return userId;
     }

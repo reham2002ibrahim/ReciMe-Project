@@ -97,7 +97,7 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
                     Date date = selectedDate.getTime();
 
                     MealDate mealDate = new MealDate(mealId, date);
-                    presenter.putCalenderMeal(meal, mealDate);
+                    presenter.putCalenderMeal( mealDate);
                 },
                 year, month, dayOfMonth
         );

@@ -10,7 +10,7 @@ public interface PresenterInterface {
 
     void putSavedMeal(String mealId) ;
 
-    void putCalenderMeal(Meal meal , MealDate mealDate) ;
+    void putCalenderMeal(MealDate mealDate) ;
 
 
 }

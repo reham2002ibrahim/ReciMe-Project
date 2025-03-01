@@ -41,7 +41,7 @@ public interface MealDao {
 
     @Query("DELETE  from calendar where mealId = :mealId and date = :date")
     Completable deleteCalendredMeal(String mealId, Date date);
-
+// for backup
     @Query("DELETE FROM meals")
     Completable deleteAllMeals();
     @Query("DELETE FROM calendar")

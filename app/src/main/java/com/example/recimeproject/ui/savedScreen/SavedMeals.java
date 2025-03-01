@@ -94,5 +94,12 @@ public class SavedMeals extends AppCompatActivity {
         });*/
 
     }
+/*    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalDataSource.getInstance(this).closeDatabase();
+        disposables.clear();
+    }*/
+
 
 }

@@ -55,12 +55,12 @@ public class Presenter implements PresenterInterface{
                         throwable -> Log.e("Presenter", "Error saving meal to calendar: " + throwable.getMessage())
                 ));
     }*/
-public void putCalenderMeal(Meal meal, MealDate mealDate) {
-    disposables.add(repository.insertToCalendar(meal, mealDate)
+public void putCalenderMeal(MealDate mealDate) {
+    disposables.add(repository.insertToCalendar( mealDate)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                    () -> Log.d("Presenter", "put meal in calendar " + meal.getIdMeal()),
+                    () -> Log.d("Presenter", "put meal in calendar " ),
                     throwable -> Log.e("Presenter", "error in saving  " + throwable.getMessage())
             ));
 }

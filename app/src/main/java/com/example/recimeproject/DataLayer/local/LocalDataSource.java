@@ -19,14 +19,18 @@ public class LocalDataSource {
     private LiveData <List<Meal>> favoriteMeals;
     private LiveData <List<Meal>> calendarMeals;
     private static LocalDataSource instance  = null ;
+  //  private  final Context context ;
     private LocalDataSource(Context context) {
         AppDatabase db = AppDatabase.getInstance(context);
         this.mealDao = db.mealDao();
-     //   this.favoriteMeals = mealDao.getFavMeals();
+        //this.context = context.getApplicationContext();
+
+        //   this.favoriteMeals = mealDao.getFavMeals();
       // this.calendarMeals = new ArrayList<>();
     }
 
-    public  static  LocalDataSource getInstance(Context context){
+
+    public  static synchronized LocalDataSource getInstance(Context context){
         if (instance == null ) {
             instance = new LocalDataSource(context) ;
         }
@@ -39,6 +43,7 @@ public class LocalDataSource {
         return mealDao.getAllMeals();
     }
 
+/*
 public Completable insertToFav(@NonNull Meal meal) {
     Boolean isFav = meal.getFav();
     if (isFav == null || !isFav) {
@@ -52,22 +57,23 @@ public Completable insertToFav(@NonNull Meal meal) {
     }
 }
 
-  /*  public Completable insertToCalendar(MealDate mealDate) {
-        return mealDao.insertMealDate(mealDate)
-                .doOnComplete(() -> Log.d("LocalDataSource", "calenderMeal date inserted: " + mealDate.getDate()))
-                .doOnError(throwable -> Log.e("LocalDataSource", "error in inserting meal dat " + throwable.getMessage()));
-    }*/
-  public Completable insertToCalendar(MealDate mealDate, Meal meal) {
-      return mealDao.getMealById(meal.getIdMeal())
-              .flatMapCompletable(existingMeal -> {
-                  if (existingMeal != null) {
-                      meal.setFav(existingMeal.getFav());
-                  } else {meal.setFav(false);}
-                  return mealDao.insertMeal(meal)
-                          .andThen(mealDao.insertMealDate(mealDate));
-              })
-              .doOnComplete(() -> Log.d("LocalDataSource", "calenderMeal inserted: " + mealDate.getDate()))
-              .doOnError(throwable -> Log.e("LocalDataSource", "error in inserting meal data: " + throwable.getMessage()));
+*/
+
+
+    public Completable insertToFav(@NonNull Meal meal) {
+        Boolean isFav = meal.getFav();
+        if (isFav == null || !isFav) {
+            meal.setFav(true);
+            return mealDao.insertMeal(meal)
+                    .doOnComplete(() -> Log.d("LocalDataSource", "Mehhhhh" + meal.getStrMeal()))
+                    .doOnError(throwable -> Log.e("LocalDataSource", "nnn " + throwable.getMessage()));
+        } else {
+            Log.d("LocalDataSource", "Meal already in favorites: " + meal.getStrMeal());
+            return Completable.complete();
+        }
+    }
+  public Completable insertToCalendar(MealDate mealDate) {
+      return mealDao.insertMealDate(mealDate);
   }
 
     public Flowable<List<String>> getCalendaredDate(Date date) {
@@ -112,4 +118,15 @@ public Completable insertToFav(@NonNull Meal meal) {
         return mealDao.getMealDates()
                 .doOnError(throwable -> Log.e("LocalDataSource", "rrror in serting  " + throwable.getMessage()));
     }
+/*
+    public void closeDatabase() {
+        AppDatabase db = AppDatabase.getInstance(context);
+        if (db.isOpen()) {
+            db.close();
+            Log.d("LocalDataSource", "Database closed successfully");
+        }
+    }
+*/
+
+
 }

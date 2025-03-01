@@ -15,8 +15,6 @@ import com.example.recimeproject.DataLayer.model.MealDate;
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract MealDao mealDao();
-
-
     private  static AppDatabase instance  = null ;
 
     public static synchronized AppDatabase getInstance(Context context) {
@@ -24,7 +22,9 @@ public abstract class AppDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "meals_database")
                     .fallbackToDestructiveMigration()
+                   .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
                     .build();
+
         }
         return instance;
     }
