@@ -35,6 +35,10 @@ public class LocalDataSource {
     public Flowable<List<Meal>> getFavoriteMeals() {
         return mealDao.getFavMeals();
     }
+    public Flowable<List<Meal>> getAllMeals() {
+        return mealDao.getAllMeals();
+    }
+
 public Completable insertToFav(@NonNull Meal meal) {
     Boolean isFav = meal.getFav();
     if (isFav == null || !isFav) {
@@ -53,10 +57,16 @@ public Completable insertToFav(@NonNull Meal meal) {
                 .doOnError(throwable -> Log.e("LocalDataSource", "error in inserting meal dat " + throwable.getMessage()));
     }*/
   public Completable insertToCalendar(MealDate mealDate, Meal meal) {
-      return mealDao.insertMeal(meal)
-              .andThen(mealDao.insertMealDate(mealDate))
-              .doOnComplete(() -> Log.d("LocalDataSource", "calenderMeal insert " + mealDate.getDate()))
-              .doOnError(throwable -> Log.e("LocalDataSource", "error in inserting meal dat " + throwable.getMessage()));
+      return mealDao.getMealById(meal.getIdMeal())
+              .flatMapCompletable(existingMeal -> {
+                  if (existingMeal != null) {
+                      meal.setFav(existingMeal.getFav());
+                  } else {meal.setFav(false);}
+                  return mealDao.insertMeal(meal)
+                          .andThen(mealDao.insertMealDate(mealDate));
+              })
+              .doOnComplete(() -> Log.d("LocalDataSource", "calenderMeal inserted: " + mealDate.getDate()))
+              .doOnError(throwable -> Log.e("LocalDataSource", "error in inserting meal data: " + throwable.getMessage()));
   }
 
     public Flowable<List<String>> getCalendaredDate(Date date) {
