@@ -51,6 +51,7 @@ public Completable insertToFav(@NonNull Meal meal) {
         return Completable.complete();
     }
 }
+
   /*  public Completable insertToCalendar(MealDate mealDate) {
         return mealDao.insertMealDate(mealDate)
                 .doOnComplete(() -> Log.d("LocalDataSource", "calenderMeal date inserted: " + mealDate.getDate()))
