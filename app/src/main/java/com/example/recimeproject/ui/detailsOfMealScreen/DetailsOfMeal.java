@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
 import com.example.recimeproject.DataLayer.model.Meal;
+import com.example.recimeproject.DataLayer.model.MealDate;
 import com.example.recimeproject.DataLayer.remote.RemoteDataSource;
 import com.example.recimeproject.DataLayer.repo.Repository;
 import com.example.recimeproject.R;
@@ -38,6 +39,7 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
     private TextView mealName, mealCategory, mealArea, mealInstructions;
     private WebView webView;
     String mealId  ;
+    private Meal meal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,9 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
                     selectedDate.set(Calendar.SECOND, 0);
                     selectedDate.set(Calendar.MILLISECOND, 0);
                     Date date = selectedDate.getTime();
-                    presenter.putCalenderMeal(mealId, date);
+
+                    MealDate mealDate = new MealDate(mealId, date);
+                    presenter.putCalenderMeal(meal, mealDate);
                 },
                 year, month, dayOfMonth
         );
@@ -106,13 +110,13 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
     }
 
 
-
-
+    // ******************* remember to ann indrediants ****************************
     @Override
     public void showSelectedMeal(Meal meal) {
         mealName.setText(meal.getStrMeal());
         mealCategory.setText("Category: " + meal.getStrCategory());
         mealArea.setText("Area: " + meal.getStrArea());
+        this.meal = meal;
 
         String instructions = meal.getStrInstructions().trim();
         String[] steps = instructions.split("\\. ");

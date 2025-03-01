@@ -1,7 +1,6 @@
 package com.example.recimeproject.DataLayer.local;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,10 +11,8 @@ import com.example.recimeproject.DataLayer.model.MealDate;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LocalDataSource {
     private final MealDao mealDao;
@@ -50,11 +47,17 @@ public Completable insertToFav(@NonNull Meal meal) {
         return Completable.complete();
     }
 }
-    public Completable insertToCalendar(MealDate mealDate) {
+  /*  public Completable insertToCalendar(MealDate mealDate) {
         return mealDao.insertMealDate(mealDate)
                 .doOnComplete(() -> Log.d("LocalDataSource", "calenderMeal date inserted: " + mealDate.getDate()))
                 .doOnError(throwable -> Log.e("LocalDataSource", "error in inserting meal dat " + throwable.getMessage()));
-    }
+    }*/
+  public Completable insertToCalendar(MealDate mealDate, Meal meal) {
+      return mealDao.insertMeal(meal)
+              .andThen(mealDao.insertMealDate(mealDate))
+              .doOnComplete(() -> Log.d("LocalDataSource", "calenderMeal insert " + mealDate.getDate()))
+              .doOnError(throwable -> Log.e("LocalDataSource", "error in inserting meal dat " + throwable.getMessage()));
+  }
 
     public Flowable<List<String>> getCalendaredDate(Date date) {
         return mealDao.getMealIdsByDate(date);
@@ -70,5 +73,32 @@ public Completable insertToFav(@NonNull Meal meal) {
         return mealDao.deleteCalendredMeal(mealId, date)
                 .doOnComplete(() -> Log.d("LocalDataSource","Meal has been deleted from calender  " + mealId))
                 .doOnError(throwable -> Log.e("LocalDataSource","Can't delete it  " + throwable.getMessage()));
+    }
+    // for backup
+    public Completable deleteAllData() {
+        return mealDao.deleteAllMeals()
+                .andThen(mealDao.deleteAllMealDates())
+                .doOnComplete(() -> Log.d("LocalDataSource", "all data deleted"))
+                .doOnError(throwable -> Log.e("LocalDataSource", "error in deleting data " + throwable.getMessage()));
+    }
+
+    public Completable insertMealDates(List<MealDate> mealDates) {
+        return mealDao.insertMealDates(mealDates)
+                .doOnComplete(() -> Log.d("LocalDataSource", "insert mealDate"))
+                .doOnError(throwable -> Log.e("LocalDataSource", "error in insert" + throwable.getMessage()));
+    }
+
+    public Completable insertMeals(List<Meal> meals) {
+        return mealDao.insertMeals(meals)
+                .doOnComplete(() -> Log.d("LocalDataSource", "Meals inserted"))
+                .doOnError(throwable -> Log.e("LocalDataSource", "rrror in serting " + throwable.getMessage()));
+    } public Completable insertOneMeal(Meal meal) {
+        return mealDao.insertMeal(meal)
+                .doOnComplete(() -> Log.d("LocalDataSource", "insert  one meal"))
+                .doOnError(throwable -> Log.e("LocalDataSource", "rrror in serting  " + throwable.getMessage()));
+    }
+    public Flowable<List<MealDate>> getMealDates() {
+        return mealDao.getMealDates()
+                .doOnError(throwable -> Log.e("LocalDataSource", "rrror in serting  " + throwable.getMessage()));
     }
 }

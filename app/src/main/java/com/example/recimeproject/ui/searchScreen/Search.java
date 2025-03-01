@@ -71,11 +71,11 @@ public class Search extends AppCompatActivity implements SearchInterface {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().trim();
+                String txt = s.toString().trim();
 
-                if (!query.isEmpty()) {
+                if (!txt.isEmpty()) {
                     isSearching = true;
-                    presenter.searchByName(query);
+                    presenter.searchByName(txt);
                 } else {
                     isSearching = false;
                     restoreChipSelection();

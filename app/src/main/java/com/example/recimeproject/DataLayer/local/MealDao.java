@@ -41,4 +41,22 @@ public interface MealDao {
 
     @Query("DELETE  from calendar where mealId = :mealId and date = :date")
     Completable deleteCalendredMeal(String mealId, Date date);
+
+    @Query("DELETE FROM meals")
+    Completable deleteAllMeals();
+    @Query("DELETE FROM calendar")
+    Completable deleteAllMealDates();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertMealDates(List<MealDate> mealDates);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertMeals(List<Meal> meals);
+
+    @Query("SELECT * FROM calendar")
+    Flowable<List<MealDate>> getMealDates();
+
+
+
+
 }

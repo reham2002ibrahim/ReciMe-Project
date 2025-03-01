@@ -1,5 +1,8 @@
 package com.example.recimeproject.ui.detailsOfMealScreen;
 
+import com.example.recimeproject.DataLayer.model.Meal;
+import com.example.recimeproject.DataLayer.model.MealDate;
+
 import java.util.Date;
 
 public interface PresenterInterface {
@@ -7,7 +10,7 @@ public interface PresenterInterface {
 
     void putSavedMeal(String mealId) ;
 
-    void putCalenderMeal(String mealId, Date date) ;
+    void putCalenderMeal(Meal meal , MealDate mealDate) ;
 
 
 }

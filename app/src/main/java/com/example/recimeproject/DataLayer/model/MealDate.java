@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey;
 public class MealDate {
     @PrimaryKey(autoGenerate=true)
     public int id;
-
+    private String userId;
     @NonNull
     public String mealId;
 
@@ -33,8 +33,14 @@ public class MealDate {
    /* public void setId(int id) {
         this.id = id;
     }   */
+   public MealDate() {}
+    public String getUserId() {
+        return userId;
+    }
 
-
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     @NonNull
     public Date getDate() {

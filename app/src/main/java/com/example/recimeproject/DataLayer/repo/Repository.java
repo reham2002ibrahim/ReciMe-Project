@@ -112,12 +112,28 @@ public class Repository {
                 .doOnError(throwable -> Log.e("Repository", "can'e  inserting favorite meal: " + throwable.getMessage()));
     }
 
+/*
     public Completable insertToCalendar(String mealId, Date date) {
         MealDate mealDate = new MealDate(mealId, date);
         return localDataSource.insertToCalendar(mealDate)
                 .doOnComplete(() -> Log.d("Repository", "Meal inserted to calender " + mealId))
                 .doOnError(throwable -> Log.e("Repository", "can't insert calendar meal " + throwable.getMessage()));
     }
+*/
+public Completable insertToCalendar(Meal meal, MealDate mealDate) {
+    if (meal.getFav() == true) {
+        return localDataSource.insertToFav(meal)
+                .andThen(localDataSource.insertToCalendar(mealDate, meal))
+                .doOnComplete(() -> Log.d("Repository", "insert to fav data inseted"))
+                .doOnError(throwable -> Log.e("Repository", "rrror in serting  " + throwable.getMessage()));
+    }
+  else{
+        return localDataSource.insertOneMeal(meal)
+                .andThen(localDataSource.insertToCalendar(mealDate, meal))
+                .doOnComplete(() -> Log.d("Repository", "all data inseted"))
+                .doOnError(throwable -> Log.e("Repository", "rrror in serting  " + throwable.getMessage()));
+    }
+}
 
     public Flowable<List<Meal>> getFavMeals() {
         return localDataSource.getFavoriteMeals();

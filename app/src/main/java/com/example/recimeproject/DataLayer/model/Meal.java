@@ -6,11 +6,14 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "meals")
 public class Meal {
+
+    private String userId;
     @PrimaryKey
     @NonNull
     public String idMeal;
     public String strMeal;
     public Boolean fav = false;
+    public Meal() {}
 
     public Boolean getFav() {
         return fav;
@@ -18,6 +21,14 @@ public class Meal {
 
     public void setFav(Boolean fav) {
         this.fav = fav;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String strCategory;
