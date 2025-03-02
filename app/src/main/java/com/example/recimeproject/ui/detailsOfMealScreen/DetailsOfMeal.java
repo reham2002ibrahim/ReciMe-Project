@@ -1,10 +1,10 @@
 package com.example.recimeproject.ui.detailsOfMealScreen;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -16,8 +16,10 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
 import com.example.recimeproject.DataLayer.model.Meal;
@@ -25,7 +27,10 @@ import com.example.recimeproject.DataLayer.model.MealDate;
 import com.example.recimeproject.DataLayer.remote.RemoteDataSource;
 import com.example.recimeproject.DataLayer.repo.Repository;
 import com.example.recimeproject.R;
+import com.example.recimeproject.ui.calenderScreen.CalenderMeals;
 import com.example.recimeproject.ui.inspirationScreen.Inspiration;
+import com.example.recimeproject.ui.loginScreen.Login;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,12 +45,14 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
     private WebView webView;
     String mealId  ;
     private Meal meal;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_details_of_meal);
+        auth = FirebaseAuth.getInstance();
 
         mealImage = findViewById(R.id.mealImageDetail);
         mealName = findViewById(R.id.mealName);
@@ -65,19 +72,32 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
             @Override
             public void onClick(View v) {
                 finish();
-               /* Intent intent = new Intent(DetailsOfMeal.this, Inspiration.class);
-                startActivity(intent);*/
+
             }
         });
 
         savedIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                presenter.putSavedMeal(mealId);
+                if (auth.getCurrentUser() != null) {
+                    presenter.putSavedMeal(mealId);
+                } else {
+                    showLoginDialog();
+                }
             }
         });
-        calenderIcon.setOnClickListener(v -> showDatePickerDialog());
+        calenderIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (auth.getCurrentUser() != null) {
+                    showDatePickerDialog();
+                } else {
+                    showLoginDialog();
+                }
+
+            }
+        });
+
     }
     private void showDatePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
@@ -163,6 +183,25 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void showLoginDialog() {
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_view, null);
+        androidx.appcompat.app.AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(false)
+                .create();
+        LottieAnimationView animationView = dialogView.findViewById(R.id.animation_view);
+        animationView.setAnimation(R.raw.logindialog);
+        animationView.playAnimation();
+        dialogView.findViewById(R.id.btnLogin).setOnClickListener(view -> {
+            Intent intent = new Intent(DetailsOfMeal.this, Login.class);
+            startActivity(intent);
+            dialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(view -> dialog.dismiss());
+        dialog.show();
     }
 }
 

@@ -3,7 +3,10 @@ package com.example.recimeproject.ui.savedScreen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +16,7 @@ import com.example.recimeproject.DataLayer.repo.Repository;
 import com.example.recimeproject.R;
 import com.example.recimeproject.ui.calenderScreen.CalenderMeals;
 import com.example.recimeproject.ui.inspirationScreen.Inspiration;
+import com.example.recimeproject.ui.profileScreen.profile;
 import com.example.recimeproject.ui.searchScreen.Search;
 import com.example.recimeproject.utils.SpacingForRV;
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ public class SavedMeals extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FavMealsAdapter adapter;
     private Button btnBack;
+    ImageView profileImg ;
     private CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
@@ -39,7 +44,7 @@ public class SavedMeals extends AppCompatActivity {
             startActivity(new Intent(SavedMeals.this, Inspiration.class));
         });
         findViewById(R.id.btn_favorite).setOnClickListener(v -> {
-            startActivity(new Intent(SavedMeals.this, SavedMeals.class));
+            //startActivity(new Intent(SavedMeals.this, SavedMeals.class));
         });
         findViewById(R.id.btn_search).setOnClickListener(v -> {
             startActivity(new Intent(SavedMeals.this, Search.class));
@@ -50,6 +55,7 @@ public class SavedMeals extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rvFavMeals);
         btnBack = findViewById(R.id.btnBack);
+        profileImg = findViewById(R.id.profileImg);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new FavMealsAdapter(SavedMeals.this, new ArrayList<>(), meal -> {
             presenter.deleteFavMeal(meal);
@@ -66,10 +72,20 @@ public class SavedMeals extends AppCompatActivity {
                         throwable -> Log.e("SavedMeals", "Error fetching favorite meals " + throwable.getMessage())
                 ));
 
-        btnBack.setOnClickListener(v -> { finish();
-        /*    Intent intent = new Intent(SavedMeals.this, Inspiration.class);
-            startActivity(intent);*/
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
+        profileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SavedMeals.this, profile.class));
+            }
+        });
+
     }
 
 

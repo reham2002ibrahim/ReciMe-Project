@@ -1,19 +1,31 @@
 package com.example.recimeproject.ui.calenderScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
 import com.example.recimeproject.DataLayer.model.Meal;
 import com.example.recimeproject.DataLayer.remote.RemoteDataSource;
 import com.example.recimeproject.DataLayer.repo.Repository;
 import com.example.recimeproject.R;
+import com.example.recimeproject.ui.inspirationScreen.Inspiration;
+import com.example.recimeproject.ui.loginScreen.Login;
+import com.example.recimeproject.ui.profileScreen.profile;
+import com.example.recimeproject.ui.savedScreen.SavedMeals;
+import com.example.recimeproject.ui.searchScreen.Search;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,13 +41,36 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
     private RecyclerView recyclerView;
     private CalendredAdapter adapter;
     private Button btnBack;
+    ImageView profileImg ;
     private Date date;
+
     private CompositeDisposable disposables = new CompositeDisposable();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_meals);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        findViewById(R.id.btn_home).setOnClickListener(v -> {
+                startActivity(new Intent(CalenderMeals.this, Inspiration.class));
+        });
+        findViewById(R.id.btn_favorite).setOnClickListener(v -> {
+            startActivity(new Intent(CalenderMeals.this, SavedMeals.class));
+        });
+        findViewById(R.id.btn_search).setOnClickListener(v -> {
+            startActivity(new Intent(CalenderMeals.this, Search.class));
+        });
+        findViewById(R.id.btn_calendar).setOnClickListener(v -> {
+           // startActivity(new Intent(CalenderMeals.this, CalenderMeals.class));
+        });
+
+
+
+
+
         presenter = new CalenderPresenter(Repository.getInstance(LocalDataSource.getInstance(this), new RemoteDataSource()));
 
         CalendarView calendarView = findViewById(R.id.calendarView);
@@ -73,6 +108,7 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
 
         recyclerView = findViewById(R.id.rvFavMeals);
         btnBack = findViewById(R.id.btnBack);
+        profileImg = findViewById(R.id.profileImg);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         adapter = new CalendredAdapter(this, new ArrayList<>(), meal -> {
@@ -108,6 +144,13 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
                 ));
 
         btnBack.setOnClickListener(v -> finish());
+        profileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CalenderMeals.this, profile.class));
+
+            }
+        });
     }
 
     @Override
@@ -121,4 +164,5 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
         super.onDestroy();
         disposables.clear();
     }
+
 }

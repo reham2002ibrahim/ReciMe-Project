@@ -33,7 +33,6 @@ public class Inspiration extends AppCompatActivity implements InspirationInterfa
     ImageView imgMeal, profileImg;
     TextView txtMealName;
     private String mealId;
-    Button btnSaved, btnCalender, btnSearch;
     private FirebaseAuth auth;
 
     @Override
@@ -41,21 +40,44 @@ public class Inspiration extends AppCompatActivity implements InspirationInterfa
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_inspiration);
+        auth = FirebaseAuth.getInstance();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        findViewById(R.id.btn_home).setOnClickListener(v -> {
+           // startActivity(new Intent(Inspiration.this, Inspiration.class));
+        });
+        findViewById(R.id.btn_favorite).setOnClickListener(v -> {
+            if (auth.getCurrentUser() != null) {
+                startActivity(new Intent(Inspiration.this, SavedMeals.class));
+            } else {
+                showLoginDialog();
+            }
+        });
+        findViewById(R.id.btn_search).setOnClickListener(v -> {
+            startActivity(new Intent(Inspiration.this, Search.class));
+        });
+        findViewById(R.id.btn_calendar).setOnClickListener(v -> {
+            if (auth.getCurrentUser() != null) {
+                startActivity(new Intent(Inspiration.this, CalenderMeals.class));
+            } else {
+                showLoginDialog();
+            }
+        });
 
         imgMeal = findViewById(R.id.imgMeal);
         txtMealName = findViewById(R.id.txtMealName);
-        btnSaved = findViewById(R.id.btnSaved);
-        btnSearch = findViewById(R.id.btnSearch);
-        btnCalender = findViewById(R.id.btnCalender);
         profileImg = findViewById(R.id.profileImg);
         presenter = new Presenter(this, Repository.getInstance(LocalDataSource.getInstance(this), new RemoteDataSource()));
         presenter.getRandomMeal();
         presenter.getSuggestionMeals();
-        auth = FirebaseAuth.getInstance();
-
         profileImg.setOnClickListener(v -> {
-            Intent intent = new Intent(Inspiration.this, profile.class);
-            startActivity(intent);
+            if (auth.getCurrentUser() != null) {
+                startActivity(new Intent(Inspiration.this, profile.class));
+            } else {
+                showLoginDialog();
+            }
         });
 
         imgMeal.setOnClickListener(v -> {
@@ -64,25 +86,6 @@ public class Inspiration extends AppCompatActivity implements InspirationInterfa
                 intent.putExtra("mealId", mealId);
                 startActivity(intent);
             }
-        });
-
-        btnSaved.setOnClickListener(v -> {
-            if (auth.getCurrentUser() != null) {
-                Intent intent = new Intent(Inspiration.this, SavedMeals.class);
-                startActivity(intent);
-            } else {
-                showLoginDialog();
-            }
-        });
-
-        btnCalender.setOnClickListener(v -> {
-            Intent intent = new Intent(Inspiration.this, CalenderMeals.class);
-            startActivity(intent);
-        });
-
-        btnSearch.setOnClickListener(v -> {
-            Intent intent = new Intent(Inspiration.this, Search.class);
-            startActivity(intent);
         });
     }
 
