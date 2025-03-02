@@ -112,14 +112,6 @@ public class Repository {
                 .doOnError(throwable -> Log.e("Repository", "can'e  inserting favorite meal: " + throwable.getMessage()));
     }
 
-/*
-    public Completable insertToCalendar(String mealId, Date date) {
-        MealDate mealDate = new MealDate(mealId, date);
-        return localDataSource.insertToCalendar(mealDate)
-                .doOnComplete(() -> Log.d("Repository", "Meal inserted to calender " + mealId))
-                .doOnError(throwable -> Log.e("Repository", "can't insert calendar meal " + throwable.getMessage()));
-    }
-*/
 public Completable insertToCalendar( MealDate mealDate) {
     return localDataSource.insertToCalendar(mealDate);
 }

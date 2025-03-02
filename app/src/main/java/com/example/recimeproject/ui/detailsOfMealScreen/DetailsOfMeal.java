@@ -9,34 +9,32 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
+import com.example.recimeproject.DataLayer.model.IngredientAndM;
 import com.example.recimeproject.DataLayer.model.Meal;
 import com.example.recimeproject.DataLayer.model.MealDate;
 import com.example.recimeproject.DataLayer.remote.RemoteDataSource;
 import com.example.recimeproject.DataLayer.repo.Repository;
 import com.example.recimeproject.R;
-import com.example.recimeproject.ui.calenderScreen.CalenderMeals;
-import com.example.recimeproject.ui.inspirationScreen.Inspiration;
 import com.example.recimeproject.ui.loginScreen.Login;
 import com.example.recimeproject.ui.profileScreen.profile;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInterface {
     private Presenter presenter;
@@ -48,6 +46,8 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
     private Meal meal;
     private FirebaseAuth auth;
     private Boolean isSaved = false ;
+    private RecyclerView recyclerViewIngredients;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,9 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
         savedIcon = findViewById(R.id.savedIcon);
         calenderIcon = findViewById(R.id.calenderIcon);
         profileImg = findViewById(R.id.profileImg);
+        recyclerViewIngredients = findViewById(R.id.recyclerViewIngredients);
 
+        meal = (Meal) getIntent().getSerializableExtra("meal");
         mealId = getIntent().getStringExtra("mealId");
         presenter = new Presenter(this, Repository.getInstance(LocalDataSource.getInstance(this), new RemoteDataSource()));
         presenter.getSelectedMeal(mealId);
@@ -79,17 +81,6 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
             }
         });
 
-      /*  savedIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (auth.getCurrentUser() != null) {
-                    presenter.putSavedMeal(mealId);
-                } else {
-                    showLoginDialog();
-                }
-            }
-        });
-        */
 isSaved = false ;
         savedIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +163,11 @@ isSaved = false ;
         mealArea.setText("Area: " + meal.getStrArea());
         this.meal = meal;
 
+        List<IngredientAndM> ingredients = getIngrediantandMu(meal);
+        recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        IngredientAdapter adapter = new IngredientAdapter(this, ingredients);
+        recyclerViewIngredients.setAdapter(adapter) ;
+
         String instructions = meal.getStrInstructions().trim();
         String[] steps = instructions.split("\\. ");
         StringBuilder formattedInstructions = new StringBuilder("Instructions:\n");
@@ -185,6 +181,24 @@ isSaved = false ;
                 .into(mealImage);
 
         showVideo(meal.getStrYoutube());
+    }
+    private List<IngredientAndM> getIngrediantandMu(Meal meal) {
+        List<IngredientAndM> ingredients = new ArrayList<>();
+
+        for (int i = 1; i <= 20; i++) {
+            try {
+                String ingredientName = (String) meal.getClass().getMethod("getStrIngredient" + i).invoke(meal);
+                String ingredientMeasure = (String) meal.getClass().getMethod("getStrMeasure" + i).invoke(meal);
+                if (ingredientName != null && !ingredientName.trim().isEmpty()) {
+                    String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredientName + "-Small.png";
+                    ingredients.add(new IngredientAndM(ingredientName, ingredientMeasure != null ? ingredientMeasure : "N/A", imageUrl));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ingredients;
     }
 
     private void showVideo(String youtubeUrl) {
