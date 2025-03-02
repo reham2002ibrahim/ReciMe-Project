@@ -64,7 +64,7 @@ public class Presenter implements PresenterInterface{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         mealList -> {
-                            if (mealList != null && !mealList.isEmpty()) {
+                            if (mealList != null &&!mealList.isEmpty()) {
                                 view.showSearchResults(mealList);
                             } else {
                                 view.showError("No data found");
@@ -125,6 +125,7 @@ public class Presenter implements PresenterInterface{
                 );
         compositeDisposable.add(disposable);
     }
+
 
 
 

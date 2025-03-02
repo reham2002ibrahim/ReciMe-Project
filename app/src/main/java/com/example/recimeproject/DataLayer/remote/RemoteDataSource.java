@@ -122,7 +122,6 @@ public class RemoteDataSource {
                 .flatMapIterable(MealResponse::getMeals)
                 .toList()
                 .subscribeOn(Schedulers.io());
-                //.observeOn(AndroidSchedulers.mainThread());
     }
 
     public Single<List<Category>> getCategories() {
@@ -131,7 +130,7 @@ public class RemoteDataSource {
                 .map(categoriesResponse -> {
                     if (categoriesResponse.getCategories() != null) {
                         return categoriesResponse.getCategories();
-                    } else throw new RuntimeException("No results categories");
+                    } else throw new RuntimeException("no results found");
 
                 });
     }

@@ -88,9 +88,6 @@ public class Search extends AppCompatActivity implements SearchInterface {
         });
 
 
-
-
-
         chipGroup = findViewById(R.id.chipGroup);
         chip = findViewById(R.id.chip);
         chip2 = findViewById(R.id.chip2);
@@ -282,6 +279,7 @@ public class Search extends AppCompatActivity implements SearchInterface {
         dialogView.findViewById(R.id.btnCancel).setOnClickListener(view -> dialog.dismiss());
         dialog.show();
     }
+
 
     @Override
     protected void onDestroy() {
