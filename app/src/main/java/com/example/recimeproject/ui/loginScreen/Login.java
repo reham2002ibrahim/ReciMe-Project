@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Login extends AppCompatActivity {
     EditText txtEmailL, txtPassL;
-    Button btnLoginL, btnSignupL;
+    Button btnLoginL, btnSignupL , btnGuest;
+    ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
     private LocalDataSource localDataSource;
@@ -47,6 +49,8 @@ public class Login extends AppCompatActivity {
         txtPassL = findViewById(R.id.txtPassL);
         btnLoginL = findViewById(R.id.btnLoginL);
         btnSignupL = findViewById(R.id.btnSignupL);
+        btnGuest = findViewById(R.id.btnGuest);
+        progressBar =findViewById(R.id.progressBar);
 
         localDataSource = LocalDataSource.getInstance(this);
         mAuth = FirebaseAuth.getInstance();
@@ -54,6 +58,13 @@ public class Login extends AppCompatActivity {
         btnSignupL.setOnClickListener(view -> {
             startActivity(new Intent(Login.this, Signup.class));
             finish();
+        });
+
+        btnGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Login.this, Inspiration.class));
+            }
         });
 
         btnLoginL.setOnClickListener(view -> {
@@ -78,6 +89,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void loginUsre(String email, String password) {
+        progressBar.setVisibility(View.VISIBLE);
         btnLoginL.setVisibility(View.INVISIBLE);
         clearLocalData(() -> {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -88,7 +100,7 @@ public class Login extends AppCompatActivity {
                         }
                     })
                     .addOnFailureListener(e -> {
-                        btnLoginL.setVisibility(View.VISIBLE);
+                      //  btnLoginL.setVisibility(View.VISIBLE);
                     });
         });
     }

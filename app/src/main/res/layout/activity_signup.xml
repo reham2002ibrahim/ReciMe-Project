@@ -153,15 +153,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtPass" />
 
-            <ProgressBar
-                android:id="@+id/signUpProgressBar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="invisible"
-                tools:layout_editor_absoluteX="280dp"
-                tools:layout_editor_absoluteY="299dp" />
-
             <androidx.cardview.widget.CardView
                 android:layout_width="101dp"
                 android:layout_height="100dp"
@@ -223,6 +214,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         app:srcCompat="@drawable/landing" />
+
+    <ProgressBar
+        android:id="@+id/signUpProgressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="92dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/btnLogin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
