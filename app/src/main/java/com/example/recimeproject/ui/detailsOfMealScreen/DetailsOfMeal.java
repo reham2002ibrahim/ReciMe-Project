@@ -30,6 +30,7 @@ import com.example.recimeproject.R;
 import com.example.recimeproject.ui.calenderScreen.CalenderMeals;
 import com.example.recimeproject.ui.inspirationScreen.Inspiration;
 import com.example.recimeproject.ui.loginScreen.Login;
+import com.example.recimeproject.ui.profileScreen.profile;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
@@ -39,13 +40,14 @@ import java.util.Locale;
 
 public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInterface {
     private Presenter presenter;
-    private ImageView mealImage, savedIcon, calenderIcon;
+    private ImageView mealImage, savedIcon, calenderIcon  , profileImg;
     private Button btnBack;
     private TextView mealName, mealCategory, mealArea, mealInstructions;
     private WebView webView;
     String mealId  ;
     private Meal meal;
     private FirebaseAuth auth;
+    private Boolean isSaved = false ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
         btnBack = findViewById(R.id.btnBack);
         savedIcon = findViewById(R.id.savedIcon);
         calenderIcon = findViewById(R.id.calenderIcon);
+        profileImg = findViewById(R.id.profileImg);
 
         mealId = getIntent().getStringExtra("mealId");
         presenter = new Presenter(this, Repository.getInstance(LocalDataSource.getInstance(this), new RemoteDataSource()));
@@ -76,7 +79,7 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
             }
         });
 
-        savedIcon.setOnClickListener(new View.OnClickListener() {
+      /*  savedIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (auth.getCurrentUser() != null) {
@@ -86,6 +89,24 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
                 }
             }
         });
+        */
+isSaved = false ;
+        savedIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (auth.getCurrentUser() != null) {
+                    if (!isSaved) {
+                        savedIcon.setImageResource(R.drawable.wightheart);
+                        savedIcon.setBackgroundResource(R.drawable.wight_circle_background);
+                        isSaved= true;
+                    }
+                    presenter.putSavedMeal(mealId);
+                } else {
+                    showLoginDialog();
+                }
+            }
+        });
+
         calenderIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +118,19 @@ public class DetailsOfMeal extends AppCompatActivity implements DetailsOfMealInt
 
             }
         });
+        profileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (auth.getCurrentUser() != null) {
+                    startActivity(new Intent(DetailsOfMeal.this, profile.class));
+                } else {
+                    showLoginDialog();
+                }
+
+            }
+        });
+
+
 
     }
     private void showDatePickerDialog() {
