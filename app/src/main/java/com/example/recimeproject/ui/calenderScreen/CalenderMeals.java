@@ -43,6 +43,7 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
     private Button btnBack;
     ImageView profileImg ;
     private Date date;
+    LottieAnimationView lottieAnimationView ;
 
     private CompositeDisposable disposables = new CompositeDisposable();
 
@@ -109,6 +110,8 @@ public class CalenderMeals extends AppCompatActivity implements CalenderMealsInt
         recyclerView = findViewById(R.id.rvFavMeals);
         btnBack = findViewById(R.id.btnBack);
         profileImg = findViewById(R.id.profileImg);
+        lottieAnimationView = findViewById(R.id.lottieAnimationView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         adapter = new CalendredAdapter(this, new ArrayList<>(), meal -> {

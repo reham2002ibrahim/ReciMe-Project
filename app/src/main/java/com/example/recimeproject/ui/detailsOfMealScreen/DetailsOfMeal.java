@@ -29,6 +29,8 @@ import com.example.recimeproject.DataLayer.repo.Repository;
 import com.example.recimeproject.R;
 import com.example.recimeproject.ui.loginScreen.Login;
 import com.example.recimeproject.ui.profileScreen.profile;
+import com.example.recimeproject.utils.SpaceItemDecoration;
+import com.example.recimeproject.utils.SpacingForRV;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -167,7 +169,7 @@ isSaved = false ;
         recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         IngredientAdapter adapter = new IngredientAdapter(this, ingredients);
         recyclerViewIngredients.setAdapter(adapter) ;
-
+        recyclerViewIngredients.addItemDecoration(new SpaceItemDecoration(20));
         String instructions = meal.getStrInstructions().trim();
         String[] steps = instructions.split("\\. ");
         StringBuilder formattedInstructions = new StringBuilder("Instructions:\n");

@@ -32,7 +32,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_meal, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.mealinsearch, parent, false);
         return new MealViewHolder(view);
     }
 
@@ -43,7 +43,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
         Glide.with(context)
                 .load(meal.getStrMealThumb())
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.imgMealThumb);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

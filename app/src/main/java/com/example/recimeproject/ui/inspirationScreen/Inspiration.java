@@ -8,9 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
@@ -25,6 +28,7 @@ import com.example.recimeproject.ui.loginScreen.Login;
 import com.example.recimeproject.ui.profileScreen.profile;
 import com.example.recimeproject.ui.savedScreen.SavedMeals;
 import com.example.recimeproject.ui.searchScreen.Search;
+import com.example.recimeproject.utils.SpaceItemDecoration;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
@@ -102,9 +106,34 @@ public class Inspiration extends AppCompatActivity implements InspirationInterfa
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         SuggestionMealsAdapter adapter = new SuggestionMealsAdapter(Inspiration.this, meals);
         recyclerView.setAdapter(adapter);
-    }
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
-    private void showLoginDialog() {
+                if (layoutManager != null) {
+                    int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+
+                    for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
+                        View view = layoutManager.findViewByPosition(i);
+                        if (view != null) {
+                            float distanceToCenter = Math.abs((view.getLeft() + view.getRight()) / 2 - recyclerView.getWidth() / 2);
+                            float scale = 1 - (distanceToCenter / (2.0f * recyclerView.getWidth()));
+                            float minScale = 0.7f;
+                            float scaleFactor = Math.max(minScale, scale);
+                            view.setScaleX(scaleFactor);
+                            view.setScaleY(scaleFactor);
+                            view.setAlpha(scaleFactor);
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+        private void showLoginDialog() {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_view, null);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(dialogView)

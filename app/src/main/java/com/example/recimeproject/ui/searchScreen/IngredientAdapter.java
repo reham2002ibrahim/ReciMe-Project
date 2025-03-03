@@ -46,7 +46,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         Glide.with(context)
                 .load(ingredient.getImageUrl())
                 .apply(new RequestOptions().override(100, 100))
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.detete_icon)
                 .into(holder.imgIngredientThumb);
 

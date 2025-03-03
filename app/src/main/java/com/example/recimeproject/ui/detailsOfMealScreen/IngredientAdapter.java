@@ -39,12 +39,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         IngredientAndM ingredient = ingredientList.get(position);
 
         holder.txtIngredientName.setText(ingredient.getName());
-        holder.txtIngredientDetails.setText( ingredient.getMeasure());
+        holder.txtIngredientDetails.setText("Quantity:"+ ingredient.getMeasure());
 
         Glide.with(context)
                 .load(ingredient.getImageUrl())
                 .apply(new RequestOptions().override(100, 100))
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.detete_icon)
                 .into(holder.imgIngredientThumb);
     }

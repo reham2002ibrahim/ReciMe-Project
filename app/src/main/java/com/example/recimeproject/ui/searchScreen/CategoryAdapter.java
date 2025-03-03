@@ -45,7 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Glide.with(context)
                 .load(category.getStrCategoryThumb())
                 .apply(new RequestOptions().override(100, 100))
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.detete_icon)
                 .into(holder.imgCategoryThumb);
 

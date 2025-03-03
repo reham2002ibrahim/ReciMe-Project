@@ -41,7 +41,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
         holder.txtAreaName.setText(area.getName());
         Glide.with(context)
                 .load(area.getImageUrl())
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.detete_icon)
                 .into(holder.imgAreaThumb);
 

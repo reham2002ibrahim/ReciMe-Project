@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.recimeproject.DataLayer.local.LocalDataSource;
 import com.example.recimeproject.DataLayer.remote.RemoteDataSource;
 import com.example.recimeproject.DataLayer.repo.Repository;
@@ -30,6 +32,7 @@ public class SavedMeals extends AppCompatActivity {
     private FavMealsAdapter adapter;
     private Button btnBack;
     ImageView profileImg ;
+    LottieAnimationView lottieAnimationView ;
     private CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
@@ -56,6 +59,7 @@ public class SavedMeals extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvFavMeals);
         btnBack = findViewById(R.id.btnBack);
         profileImg = findViewById(R.id.profileImg);
+        lottieAnimationView = findViewById(R.id.lottieAnimationView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new FavMealsAdapter(SavedMeals.this, new ArrayList<>(), meal -> {
             presenter.deleteFavMeal(meal);
@@ -68,7 +72,16 @@ public class SavedMeals extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        meals -> adapter.setMealList(meals),
+                        meals -> {
+                            adapter.setMealList(meals);
+                            if (meals.isEmpty()) {
+                                lottieAnimationView.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            } else {
+                                lottieAnimationView.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                            }
+                        },
                         throwable -> Log.e("SavedMeals", "Error fetching favorite meals " + throwable.getMessage())
                 ));
 

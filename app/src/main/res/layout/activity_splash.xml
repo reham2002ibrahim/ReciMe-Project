@@ -6,6 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".ui.splashScreen.Splash">
 
   <com.airbnb.lottie.LottieAnimationView
@@ -30,7 +31,7 @@
       android:fontFamily="sans-serif-black"
       android:gravity="center"
       android:text="From Plan to Plate!"
-      android:textColor="#FF9900"
+      android:textColor="@color/wight"
       android:textSize="34sp"
       android:textStyle="bold"
       app:layout_constraintStart_toStartOf="parent"

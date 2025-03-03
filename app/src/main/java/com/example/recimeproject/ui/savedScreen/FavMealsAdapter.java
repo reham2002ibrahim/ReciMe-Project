@@ -47,7 +47,7 @@ public class FavMealsAdapter extends RecyclerView.Adapter<FavMealsAdapter.MealVi
         Glide.with(context)
                 .load(meal.getStrMealThumb())
                 .apply(new RequestOptions().override(200, 200))
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imgMealThumb);
 

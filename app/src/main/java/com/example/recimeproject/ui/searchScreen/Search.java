@@ -98,7 +98,7 @@ public class Search extends AppCompatActivity implements SearchInterface {
         btnBack = findViewById(R.id.btnBack);
         profileImg = findViewById(R.id.profileImg);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
+//
         Repository repository = Repository.getInstance(
                 LocalDataSource.getInstance(this),
                 new RemoteDataSource()
